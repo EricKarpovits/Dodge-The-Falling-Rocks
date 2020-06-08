@@ -1,0 +1,51 @@
+# depslib dependency file v1.0
+1591385789 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\main.cpp
+	"declarations.h"
+
+1589142048 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\character.cpp
+
+1591114326 c:\users\eric1\desktop\karpovits_dodge the falling rocks\declarations.h
+	<stdio.h>
+	<allegro5/allegro.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_primitives.h>
+	<allegro5/allegro_native_dialog.h>
+	<time.h>
+	<windows.h>
+
+1588963020 c:\users\eric1\desktop\karpovits_dodge the falling rocks\setup.cpp
+	"declarations.h"
+
+1588969693 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\setup.cpp
+
+1589477414 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\test.cpp
+	"declarations.h"
+
+1590985828 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\gamesetup.cpp
+	"declarations.h"
+
+1590909243 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\highscore.cpp
+	"declarations.h"
+
+1590905114 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\objectmovement.cpp
+	"declarations.h"
+
+1589839971 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\restart.cpp
+
+1590684127 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\collisions.cpp
+	"declarations.h"
+
+1591386013 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\playgame.cpp
+	"declarations.h"
+
+1591385575 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\powerup.cpp
+	"declarations.h"
+
+1591386013 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\startmenu.cpp
+	"declarations.h"
+
+1591385389 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\instructionscredits.cpp
+	"declarations.h"
+

@@ -1,0 +1,20 @@
+1 INSTRUCTIONS
+11 Dodge as many rocks as possible by using the arrow keys
+13 You obtain 1 point as each rock hits the bottom of the ground
+11 Holding the space bar allows you to go twice as fast
+11 Colliding with rocks makes you lose a life and become invincible
+
+1 POWERUPS
+12 There are 3 types of obtainable power ups each lasting 5 seconds:
+13  - The invincible power up which does not allow you to lose lives
+11 - The slow motion power up which slows objact movement down
+9 - The mini power up which makes you tiny
+
+1 MISC 
+8 The speed of everything increases every 30 seconds
+6 Pressing the 'P' pauses the game
+6 Pressing 'B' shows the bounding boxes
+5 Pressing 'R' restarts the game
+
+
+

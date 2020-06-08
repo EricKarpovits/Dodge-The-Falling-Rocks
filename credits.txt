@@ -1,0 +1,7 @@
+1 CREDITS
+4 Dodge the Falling Rocks 
+5 A Game by Eric Karpovits
+6 Copyrighted Karpovits Co. All rights reserved 
+8 This game was created in Allegro5 using C
+2 Special thanks:
+6 To Mr. Creelman for the lessons
