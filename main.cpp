@@ -48,14 +48,13 @@ int main(int argc, char *argv[]){
 	}
 
     //A function to exit the program
-    returnCode = exitProgram(mainCharacter);
-    if(returnCode == 0){
-        return 0;
-    }
+    exitProgram(mainCharacter);
+
+    return 0;
 }
 
 //This function exits everything for the program
-int exitProgram(Character &image){
+void exitProgram(Character &image){
     //Release the bitmap data and exit with no errors
     al_destroy_bitmap(image.bitmap);
 	al_destroy_display(display);
@@ -66,7 +65,6 @@ int exitProgram(Character &image){
 	al_destroy_timer(invincibleTimer);
 	al_destroy_timer(miniTimer);
 	al_destroy_font(arial);
-	return 0;
 }
 
 
