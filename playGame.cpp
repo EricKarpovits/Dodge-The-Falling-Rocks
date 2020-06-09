@@ -3,31 +3,41 @@
 extern ALLEGRO_TIMER *slowmoTimer, *invincibleTimer, *miniTimer, *speedIncreaser, *timer;
 extern ALLEGRO_EVENT_QUEUE *event_queue;
 extern ALLEGRO_FONT *arial;
-extern Paused timerPaused;
 
-int playGame(bool &continuePlaying, bool &closedDisplay, int &userScore, int &numberOfCollisions,  Keyboard &userKeyboard, Character &mainCharacter, Rocks fallingRocks[], Lives userLives[], PowerUp fallingPowerUps[], int &gameMode, Button clickableButton[]){
+/**
+* Main function of the game
+* It allows every game mode to run and the user to play the game
+* return game exit code
+**/
+int playGame(bool &continuePlaying,  Keyboard &userKeyboard, Character &mainCharacter, Rocks fallingRocks[], Lives userLives[], PowerUp fallingPowerUps[], int &gameMode, Button clickableButton[], Paused &timerPaused){
 
     // Declare variables and create an event
     int returnCode;
+    bool buttonClicked, keyDown;
+    static int numberOfCollisions = 0;
+    static int userScore = 0;
+
     ALLEGRO_EVENT ev;
+
     al_wait_for_event(event_queue, &ev);
 
     switch (gameMode) {
-        case 1:
+        case START_MENU:
             drawButtons(clickableButton, gameMode);
             al_draw_text(arial, BLACK, 0, 773, 0, "By Eric Karpovits");
             al_draw_text(arial, BLACK, SCREEN_WIDTH / 2, 75, ALLEGRO_ALIGN_CENTER, "Dodge the Falling Rocks");
             al_flip_display();
             break;
-        case 2:
+        case INSTRUCTIONS:
             drawButtons(clickableButton, gameMode);
             returnCode = gameInstructions();
             if (returnCode != 0){
                 printf("Returning error code %d", returnCode);
                 return returnCode;
             }
+            al_flip_display();
             break;
-        case 3:
+        case GAME_ON:
             al_start_timer(speedIncreaser);
             // Restart the game if the user presses R
             if(userKeyboard.keyR){
@@ -37,7 +47,7 @@ int playGame(bool &continuePlaying, bool &closedDisplay, int &userScore, int &nu
             }
 
             if(timerPaused.invincibleTimer || timerPaused.miniTimer || timerPaused.slowmoTimer || timerPaused.speedIncreaser){
-                unpauseTimers();
+                unpauseTimers(timerPaused);
             }
 
             // Event timer
@@ -45,10 +55,10 @@ int playGame(bool &continuePlaying, bool &closedDisplay, int &userScore, int &nu
 
                 // This is an if statement which does not allow any movement to occur
                 if(userKeyboard.keyP){
-                    gameMode = 6;
+                    gameMode = PAUSED;
                     buttonSetup(clickableButton, gameMode);
                     userKeyboard.keyP = false;
-                    pauseTimers();
+                    pauseTimers(timerPaused);
                 }
                 // Set dx and dy so the character will do what the keyboard tells it
                 keyboardMovement(userKeyboard);
@@ -67,13 +77,18 @@ int playGame(bool &continuePlaying, bool &closedDisplay, int &userScore, int &nu
                 userLevel();
 
                 // Calculate bounding boxes
-                calcBoundsDrawing(mainCharacter, fallingRocks, fallingPowerUps);
+                obtainBoundingBoxes(mainCharacter, fallingRocks, fallingPowerUps);
 
                 // Draw a flicking collision image
                 returnCode = collisionsMain(mainCharacter, fallingRocks, numberOfCollisions, userLives, fallingPowerUps);
+                if (returnCode != 0) {
+                    printf("Returning error code %d.", returnCode);
+                    return returnCode;
+                }
+
 
                 if(!userLives[0].usable){
-                    gameMode = 5;
+                    gameMode = HIGHSCORE;
                 }
                 // Draw bounding boxes if user presses the character B
                 drawBoundingBox(mainCharacter, fallingRocks, userKeyboard, fallingPowerUps);
@@ -86,21 +101,27 @@ int playGame(bool &continuePlaying, bool &closedDisplay, int &userScore, int &nu
                 }
             }
             break;
-        case 4:
+        case CREDITS:
             drawButtons(clickableButton, gameMode);
-            credits();
+            returnCode = credits();
+            if (returnCode != 0){
+                return returnCode;
+            }
             break;
-        case 5:
-            checkHighScore(userScore, closedDisplay);
+        case HIGHSCORE:
+            returnCode = checkHighScore(userScore);
+            if (returnCode != 0){
+                return returnCode;
+            }
             userKeyboard.keyR = true;
-            gameMode = 1;
+            gameMode = START_MENU;
             buttonSetup(clickableButton, gameMode);
             break;
-        case 6:
+        case PAUSED:
             drawButtons(clickableButton, gameMode);
             al_flip_display();
             if (userKeyboard.keyP){
-                gameMode = 3;
+                gameMode = GAME_ON;
                 userKeyboard.keyP = false;
                 buttonSetup(clickableButton, gameMode);
             }
@@ -111,21 +132,23 @@ int playGame(bool &continuePlaying, bool &closedDisplay, int &userScore, int &nu
     // Checks if the user closed the display
     if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
         continuePlaying = false;
-        closedDisplay = true;
     }
     // Set direction if key pressed
     else if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
-        eventKeyDown(ev.keyboard.keycode, userKeyboard);
+        keyDown = true;
+        keyboardEvent(ev.keyboard.keycode, userKeyboard, keyDown);
     // Stop movement if key is released
     } else if (ev.type == ALLEGRO_EVENT_KEY_UP){
-        eventKeyUp(ev.keyboard.keycode, userKeyboard);
+        keyDown = false;
+        keyboardEvent(ev.keyboard.keycode, userKeyboard, keyDown);
     } else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN){
-        checkWhichButtonClicked(clickableButton, ev.mouse.x, ev.mouse.y, gameMode);
+        buttonClicked = true;
+        checkWhichButtonAction(clickableButton, ev.mouse.x, ev.mouse.y, gameMode, buttonClicked);
+        checkButtonState(clickableButton, gameMode, continuePlaying, userKeyboard, timerPaused);
     } else if (ev.type == ALLEGRO_EVENT_MOUSE_AXES){
-       printf("%d %d\n", ev.mouse.x, ev.mouse.y);
-        detectButtonHover(clickableButton, ev.mouse.x, ev.mouse.y, gameMode);
+        buttonClicked = false;
+        checkWhichButtonAction(clickableButton, ev.mouse.x, ev.mouse.y, gameMode, buttonClicked);
     }
-    checkButtonState(clickableButton, gameMode, continuePlaying, closedDisplay, userKeyboard);
 
     return  0;
 }

@@ -69,65 +69,50 @@ void keyboardMovement(Keyboard &movement){
 }
 
 // This function makes the bool turn true when the key is pressed
-void eventKeyDown(int keycode, Keyboard &event){
-    switch(keycode) {
+void keyboardEvent(int keycode, Keyboard &event, bool keyDown){
+
+    switch(keycode){
         case ALLEGRO_KEY_UP:
-            event.keyUp = true;
+            event.keyUp = !event.keyUp;
             break;
         case ALLEGRO_KEY_DOWN:
-            event.keyDown = true;
+            event.keyDown = !event.keyDown;
             break;
         case ALLEGRO_KEY_LEFT:
-            event.keyLeft = true;
+            event.keyLeft = !event.keyLeft;
             break;
         case ALLEGRO_KEY_RIGHT:
-            event.keyRight = true;
+            event.keyRight = !event.keyRight;
             break;
         case ALLEGRO_KEY_SPACE:
             event.keySpace = !event.keySpace;
-            break;
-        case ALLEGRO_KEY_B:
-            event.keyB = !event.keyB;
             break;
         case ALLEGRO_KEY_R:
             event.keyR = true;
             break;
         case ALLEGRO_KEY_P:
-            event.keyP = !event.keyP;
+            if(keyDown && !event.keyP){
+                event.keyP = true;
+            }else if(keyDown && event.keyP){
+                event.keyP = false;
+            }
+            break;
+        case ALLEGRO_KEY_B:
+            if(keyDown && !event.keyB){
+                event.keyB = true;
+            }else if(keyDown && event.keyB){
+                event.keyB = false;
+            }
             break;
         default:
             break;
     }
 }
 
-// This function makes the bool turn false when the key is released
-void eventKeyUp(int keycode, Keyboard &event){
-    switch(keycode) {
-        case ALLEGRO_KEY_UP:
-            event.keyUp = false;
-            break;
-        case ALLEGRO_KEY_DOWN:
-            event.keyDown = false;
-            break;
-        case ALLEGRO_KEY_LEFT:
-            event.keyLeft = false;
-            break;
-        case ALLEGRO_KEY_RIGHT:
-            event.keyRight = false;
-            break;
-        case ALLEGRO_KEY_SPACE:
-            event.keySpace = !event.keySpace;
-            break;
-        default:
-            break;
-    }
-}
-
-// This function draws the images of the sprites every time the timer tells it too
+// The function takes the objects x and y coordinates of the object and draws the image at those coordinates when the timer event occurs
 void drawSprites(Character &cDraw, Rocks rDraw[], Lives lDraw[], PowerUp pDraw[]){
 
-    // The function takes the objects x and y coordinates and draws the image at those coordinates
-
+    // Draw all the objects in the game
     al_draw_bitmap(cDraw.bitmap, cDraw.characterPositionX, cDraw.characterPositionY, 0);
 
     for(int i=0; i<NUMBER_OF_LIVES; i++){
@@ -136,7 +121,7 @@ void drawSprites(Character &cDraw, Rocks rDraw[], Lives lDraw[], PowerUp pDraw[]
         }
     }
 
-    for (int i = 0; i < NUMBER_OF_ROCKS; i++){
+    for(int i = 0; i < NUMBER_OF_ROCKS; i++){
         al_draw_bitmap(rDraw[i].bitmap, rDraw[i].rockPositionX, rDraw[i].rockPositionY, 0);
     }
 
@@ -145,8 +130,9 @@ void drawSprites(Character &cDraw, Rocks rDraw[], Lives lDraw[], PowerUp pDraw[]
     }
 }
 
-
+// This function prints out the level the user is on, on the bottom left corner
 void userLevel(){
+
     int obtainUserLevel = al_get_timer_count(speedIncreaser) + 1;
     al_draw_textf(arial, RED, 0, 775, ALLEGRO_ALIGN_LEFT, "Level %d", obtainUserLevel);
 }

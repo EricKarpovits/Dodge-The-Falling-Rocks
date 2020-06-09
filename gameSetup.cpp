@@ -13,26 +13,6 @@ int setupMain(Character &cSetup, Lives lSetup[], Rocks rSetup[], Keyboard &kSetu
 
     int returnCode = 0;
 
-    if(kSetup.keyR){
-        al_set_timer_count(speedIncreaser, 0);
-        al_stop_timer(invincibleTimer);
-        al_set_timer_count(invincibleTimer, 0);
-        al_stop_timer(miniTimer);
-        al_set_timer_count(miniTimer, 0);
-        al_stop_timer(slowmoTimer);
-        al_set_timer_count(slowmoTimer, 0);
-        // Create a bitmap character and load the picture
-        ALLEGRO_BITMAP *characterImg = al_load_bitmap("mainCharacter.bmp");
-        cSetup.bitmap = characterImg;
-        if (!cSetup.bitmap) {
-            al_show_native_message_box(display, "Error", "Error", "Failed to load image!", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
-            al_destroy_display(display);
-            return -5;
-        }
-        //Remove Pink Mask
-        al_convert_mask_to_alpha(cSetup.bitmap, PINK);
-    }
-
     if(!kSetup.keyR){
         // Initialize Allegro
         al_init();
@@ -60,18 +40,18 @@ int setupMain(Character &cSetup, Lives lSetup[], Rocks rSetup[], Keyboard &kSetu
 
         // Need to add image processor
         if (!al_init_image_addon()) {
-            al_show_native_message_box(display, "Error", "Error", "Failed to initialize image addon!", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+            al_show_native_message_box(display, "Error", "Error", "Failed to initialize image add on!", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
             return -3;
         }
 
         // Initialize primative add on
         if (!al_init_primitives_addon()) {
-            al_show_native_message_box(display, "Error", "Error", "Failed to initialize primatives addon!", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+            al_show_native_message_box(display, "Error", "Error", "Failed to initialize primatives add on!", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
             return -1;
         }
 
         if (!al_install_mouse()) {
-            al_show_native_message_box(display, "Error", "Error", "Failed to initialize mouse addon!", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+            al_show_native_message_box(display, "Error", "Error", "Failed to initialize mouse add on!", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
             return -1;
         }
 
@@ -116,7 +96,27 @@ int setupMain(Character &cSetup, Lives lSetup[], Rocks rSetup[], Keyboard &kSetu
 
         // Start timers
         al_start_timer(timer);
+    }else{
+        al_set_timer_count(speedIncreaser, 0);
+        al_stop_timer(invincibleTimer);
+        al_set_timer_count(invincibleTimer, 0);
+        al_stop_timer(miniTimer);
+        al_set_timer_count(miniTimer, 0);
+        al_stop_timer(slowmoTimer);
+        al_set_timer_count(slowmoTimer, 0);
+
+        // Create a bitmap character and load the picture
+        ALLEGRO_BITMAP *characterImg = al_load_bitmap("mainCharacter.bmp");
+        cSetup.bitmap = characterImg;
+            if (!cSetup.bitmap) {
+                al_show_native_message_box(display, "Error", "Error", "Failed to load image!", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+                al_destroy_display(display);
+                return -5;
+            }
+        //Remove Pink Mask
+        al_convert_mask_to_alpha(cSetup.bitmap, PINK);
     }
+
 
     // Set up the structs and initialize them
     characterSetup(cSetup);
@@ -186,6 +186,8 @@ int loadImage(Character &imageCharacter, Rocks imageRocks[], Lives imageLives[])
     //Remove Pink Mask
     al_convert_mask_to_alpha(imageCharacter.bitmap, PINK);
 
+    //al_destroy_bitmap(characterImg);
+
     //Load bitmap image of the rock
     ALLEGRO_BITMAP *rockImg = al_load_bitmap("fallingRock.bmp");
 
@@ -200,10 +202,11 @@ int loadImage(Character &imageCharacter, Rocks imageRocks[], Lives imageLives[])
         //Remove Pink Mask
         al_convert_mask_to_alpha(imageRocks[i].bitmap, PINK);
     }
+    //al_destroy_bitmap(rockImg);
 
+    ALLEGRO_BITMAP *lifeImg = al_load_bitmap("life.bmp");
     // Load images for every life
     for(int i = 0; i<NUMBER_OF_LIVES; i++){
-        ALLEGRO_BITMAP *lifeImg = al_load_bitmap("life.bmp");
         imageLives[i].bitmap = lifeImg;
         if (!imageLives[i].bitmap) {
             al_show_native_message_box(display, "Error", "Error", "Failed to load image!", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
@@ -212,8 +215,7 @@ int loadImage(Character &imageCharacter, Rocks imageRocks[], Lives imageLives[])
         }
         al_convert_mask_to_alpha(imageLives[i].bitmap, PINK);
     }
+    //al_destroy_bitmap(lifeImg);
+
     return 0;
 }
-
-//This modular function checks if something did not load
-//int checkIfImageLoaded()

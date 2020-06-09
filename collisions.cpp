@@ -43,27 +43,46 @@ int collisionsMain(Character &mainCharacter, Rocks fallingRocks[], int &numberOf
 }
 
 // This function calculates where the bounding boxes are
-void calcBoundsDrawing(Character &a, Rocks b[], PowerUp c[]){
-    a.bbLeft = a.characterPositionX;
-	a.bbTop  = a.characterPositionY;
-	a.bbRight = a.bbLeft + al_get_bitmap_width(a.bitmap);
-	a.bbBottom = a.bbTop + al_get_bitmap_height(a.bitmap);
+void obtainBoundingBoxes(Character &a, Rocks b[], PowerUp c[]){
 
+    // Declares
+    int object = CHARACTER;
+    calcBoundingBoxes(a, b[0], c[0], object);
+
+    object = ROCKS;
     for(int i = 0; i < NUMBER_OF_ROCKS; i++){
-        b[i].bbLeft = b[i].rockPositionX;
-        b[i].bbTop  = b[i].rockPositionY;
-        b[i].bbRight = b[i].bbLeft + al_get_bitmap_width(b[i].bitmap);
-        b[i].bbBottom = b[i].bbTop + al_get_bitmap_height(b[i].bitmap);
+        calcBoundingBoxes(a, b[i], c[i], object);
     }
 
+    object = POWER_UPS;
     for(int i = 0; i < NUMBER_OF_POWERUPS; i++){
-        c[i].bbLeft = c[i].powerupXCoordinate;
-        c[i].bbTop  = c[i].powerupYCoordinate;
-        c[i].bbRight = c[i].bbLeft + al_get_bitmap_width(c[i].bitmap);
-        c[i].bbBottom = c[i].bbTop + al_get_bitmap_height(c[i].bitmap);
+        calcBoundingBoxes(a, b[i], c[i], object);
     }
-
 }
+
+void calcBoundingBoxes(Character &a, Rocks &b, PowerUp &c, int object){
+    switch(object){
+        case CHARACTER:
+            a.bbLeft = a.characterPositionX;
+            a.bbTop  = a.characterPositionY;
+            a.bbRight = a.bbLeft + al_get_bitmap_width(a.bitmap);
+            a.bbBottom = a.bbTop + al_get_bitmap_height(a.bitmap);
+            break;
+        case ROCKS:
+            b.bbLeft = b.rockPositionX;
+            b.bbTop  = b.rockPositionY;
+            b.bbRight = b.bbLeft + al_get_bitmap_width(b.bitmap);
+            b.bbBottom = b.bbTop + al_get_bitmap_height(b.bitmap);
+            break;
+        case POWER_UPS:
+            c.bbLeft = c.powerupXCoordinate;
+            c.bbTop  = c.powerupYCoordinate;
+            c.bbRight = c.bbLeft + al_get_bitmap_width(c.bitmap);
+            c.bbBottom = c.bbTop + al_get_bitmap_height(c.bitmap);
+            break;
+    }
+}
+
 
 // This function draws the bounding boxes in red if the user presses b
 void drawBoundingBox(Character &image, Rocks object[], Keyboard &userKeyboard, PowerUp powerUpImg[]){
@@ -91,8 +110,6 @@ void drawBoundingBox(Character &image, Rocks object[], Keyboard &userKeyboard, P
 
 // This function checks for if collisions are occurring with the rocks
 bool checkCollision(Character &a, Rocks &b, PowerUp &c, bool checkCollisionRocks){
-    //  printf("Character: %d, %d, %d, %d\n", a.bbBottom, a.bbLeft, a.bbRight, a.bbTop);
-    //printf("Rock: %d, %d, %d, %d\n", b.bbBottom, b.bbLeft, b.bbRight, b.bbTop);
 
     if (checkCollisionRocks){
         if (a.bbBottom < b.bbTop) {
