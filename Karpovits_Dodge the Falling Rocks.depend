@@ -1,10 +1,10 @@
 # depslib dependency file v1.0
-1591385789 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\main.cpp
+1591717207 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\main.cpp
 	"declarations.h"
 
 1589142048 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\character.cpp
 
-1591114326 c:\users\eric1\desktop\karpovits_dodge the falling rocks\declarations.h
+1591717650 c:\users\eric1\desktop\karpovits_dodge the falling rocks\declarations.h
 	<stdio.h>
 	<allegro5/allegro.h>
 	<allegro5/allegro_font.h>
@@ -23,29 +23,29 @@
 1589477414 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\test.cpp
 	"declarations.h"
 
-1590985828 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\gamesetup.cpp
+1591717469 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\gamesetup.cpp
 	"declarations.h"
 
-1590909243 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\highscore.cpp
+1591685246 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\highscore.cpp
 	"declarations.h"
 
-1590905114 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\objectmovement.cpp
+1591685245 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\objectmovement.cpp
 	"declarations.h"
 
 1589839971 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\restart.cpp
 
-1590684127 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\collisions.cpp
+1591716698 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\collisions.cpp
 	"declarations.h"
 
-1591386013 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\playgame.cpp
+1591717336 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\playgame.cpp
 	"declarations.h"
 
-1591385575 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\powerup.cpp
+1591717207 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\powerup.cpp
 	"declarations.h"
 
-1591386013 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\startmenu.cpp
+1591717352 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\startmenu.cpp
 	"declarations.h"
 
-1591385389 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\instructionscredits.cpp
+1591715058 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\instructionscredits.cpp
 	"declarations.h"
 

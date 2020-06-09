@@ -27,6 +27,41 @@
 #define SCREEN_HEIGHT 800
 #define GENERATE_RANGE 570
 
+// Error Code Constants
+#define ERROR_DISPLAY -1
+#define ERROR_KEYBOARD -2
+#define ERROR_CHARACTER_IMG -3
+#define ERROR_IMG_ADDON -4
+#define ERROR_PRIMATIVE_ADDON -5
+#define ERROR_MOUSE_ADDON -6
+#define ERROR_FPSTIMER -7
+#define ERROR_INVINCIBLE_TIMER -8
+#define ERROR_SLOW_MOTION_TIMER -9
+#define ERROR_TINY_TIMER -10
+#define ERROR_SPEED_INCREASER_TIMER -11
+#define ERROR_EVENT_QUEUE -12
+#define ERROR_ARIAL_FONT -13
+#define ERROR_SMALL_ARIAL_FONT -14
+#define ERROR_ROCK_IMG -15
+#define ERROR_LIFE_IMG -16
+#define ERROR_INVINCIBILITY_IMG -17
+#define ERROR_SLOW_MOTION_IMG -18
+#define ERROR_MINI_IMG -19
+
+// Game Mode Constants
+#define START_MENU 1
+#define INSTRUCTIONS 2
+#define GAME_ON 3
+#define CREDITS 4
+#define HIGHSCORE 5
+#define PAUSED 6
+
+// Object Constants
+#define CHARACTER 1
+#define ROCKS 2
+#define POWER_UPS 3
+#define LIVES 4
+
 // Set up structs
 struct Character {
     ALLEGRO_BITMAP *bitmap;
@@ -52,7 +87,6 @@ struct Lives{
 
 struct PowerUp{
     ALLEGRO_BITMAP *bitmap;
-    ALLEGRO_TIMER *PowerUpTimer;
 
     int powerupXCoordinate;
     int powerupYCoordinate;
@@ -94,40 +128,41 @@ struct Paused{
     bool slowmoTimer, invincibleTimer, miniTimer, speedIncreaser;
 };
 
-// Prototype
+/// Prototype
+
 // Setup
 int setupMain(Character &cSetup, Lives lSetup[], Rocks rSetup[], Keyboard &kSetup, PowerUp fallingPowerUps[]);
 void generateRockLocation(Rocks startPosition[]);
-void lifeSetup(Lives a[]);
+void lifeSetup( Lives a[]);
 void characterSetup(Character &a);
 int loadImage(Character &imageCharacter, Rocks imageRocks[], Lives imageLives[]);
 void initializeUserKeyboard(Keyboard &initialize);
 
 // Play Game
-int playGame(bool &continuePlaying, bool &closedDisplay, int &userScore, int &numberOfCollisions, Keyboard &userKeyboard, Character &mainCharacter, Rocks fallingRocks[], Lives userLives[], PowerUp fallingPowerUps[], int &gameMode, Button clickableButton[]);
+int playGame(bool &continuePlaying, Keyboard &userKeyboard, Character &mainCharacter, Rocks fallingRocks[], Lives userLives[], PowerUp fallingPowerUps[], int &gameMode, Button clickableButton[], Paused &timerPaused);
 void userLevel();
 int checkIfObjectReachedBottom(Rocks rocksReachedBottom[], PowerUp powerUpReachedBottom[]);
 
 // Collisions
 int collisionsMain(Character &mainCharacter, Rocks fallingRocks[], int &numberOfCollisions, Lives userLives[], PowerUp fallingPowerUps[]);
 int drawCollision(bool &timerRunning, Character &mainCharacter);
-void calcBoundsDrawing(Character &a, Rocks b[], PowerUp c[]);
+void obtainBoundingBoxes(Character &a, Rocks b[], PowerUp c[]);
+void calcBoundingBoxes(Character &a, Rocks &b, PowerUp &c, int object);
 void drawBoundingBox(Character &image, Rocks object[], Keyboard &userKeyboard, PowerUp powerUpImg[]);
 bool checkCollision(Character &a, Rocks &b, PowerUp &c, bool checkCollisionRocks);
 
 // Movement
 void spriteMovement(Character &cMovement, Keyboard &kMovement, Rocks rMovement[], PowerUp pMovement[]);
 void keyboardMovement(Keyboard &movement);
-void eventKeyDown(int keycode, Keyboard &event);
-void eventKeyUp(int keycode, Keyboard &event);
+void keyboardEvent(int keycode, Keyboard &event, bool keyDown);
 void drawSprites(Character &cDraw, Rocks rDraw[], Lives lDraw[], PowerUp pDraw[]);
 bool checkIfSlowMoActivated(PowerUp checkSlowMo);
 
 // The end of the program
-int exitProgram(Character &image);
-void checkHighScore(int playerScore, bool closedDisplay);
+void exitProgram(Character &image);
+int checkHighScore(int playerScore);
 void printHighScore(int highScore[]);
-void averageHighscore(int playerScore);
+int averageHighscore(int playerScore);
 
 // PowerUps
 int activatePowerUp(PowerUp &userPowerUps, Character &userCharacter);
@@ -137,14 +172,14 @@ int checkIfPowerUpOver(Character &userCharacter);
 
 // Start Menu
 void buttonSetup(Button setup[], int gameMode);
+void setButtonCoords(Button &button, int upperLeftX, int upperLeftY, int lowerRightX, int lowerRightY);
 void drawButtons(Button draw[], int gameMode);
-void checkWhichButtonClicked(Button check[], int mouseXCoordinate, int mouseYCoordinate, int gameMode);
-void checkButtonState(Button state[], int &gameMode, bool &continuePlaying, bool &closedDisplay, Keyboard &userKeyboard);
-void detectButtonHover(Button hover[], int mouseXCoordinate, int mouseYCoordinate, int gameMode);
+void checkWhichButtonAction(Button check[], int mouseXCoordinate, int mouseYCoordinate, int gameMode, bool buttonClicked);
+void checkButtonState(Button state[], int &gameMode, bool &continuePlaying, Keyboard &userKeyboard, Paused &timerPaused);
 int gameInstructions();
-void credits();
+int credits();
 void checkIfNewGameMode(int newGameMode, int previousGameMode, Button b[]);
-void pauseTimers();
-void unpauseTimers();
+void pauseTimers(Paused &timerPaused);
+void unpauseTimers(Paused &timerPaused);
 void printFromTextfile(FILE *fptr);
 
