@@ -109,6 +109,7 @@ int initializeAllegro() {
         app.speedIncreaser = al_create_timer(30.0);
         app.slowmoTimer = al_create_timer(5.0);
         app.miniTimer = al_create_timer(5.0);
+        app.displayTimer = al_create_timer(8.0);
 
         // Check that timers were created
         if (!app.slowmoTimer) {
@@ -136,6 +137,11 @@ int initializeAllegro() {
             al_show_native_message_box(app.display, "Error", "Error", "Failed to create mini character timer!", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
             al_destroy_display(app.display);
             return ERROR_TINY_TIMER;
+        }
+        if (!app.displayTimer) {
+            al_show_native_message_box(app.display, "Error", "Error", "Failed to create display switch timer!", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+            al_destroy_display(app.display);
+            return ERROR_DISPLAY_TIMER;
         }
 
         // Start timer

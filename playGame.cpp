@@ -93,6 +93,7 @@ int playGame(
                 // Check if the user has no more lives and play death sound
                 if (!userLives[4].usable) {
                     al_play_sample(app.characterDeath, 5.0, 0, 1.0, ALLEGRO_PLAYMODE_ONCE, 0);
+                    al_start_timer(app.displayTimer);
                     gameMode = HIGHSCORE;
                 }
                 // Draw bounding boxes if user presses the character B
@@ -128,10 +129,11 @@ int playGame(
             if (returnCode != 0) {
                 return returnCode;
             }
-            userKeyboard.keyR = true;
-            gameMode = START_MENU;
-            buttonSetup(clickableButton, gameMode);
-            Sleep(8000);
+            if (!al_get_timer_started(app.displayTimer)){
+                userKeyboard.keyR = true;
+                gameMode = START_MENU;
+                buttonSetup(clickableButton, gameMode);
+            }
             break;
         case PAUSED:
             // Draw buttons

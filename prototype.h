@@ -34,7 +34,7 @@ bool checkIfSlowMoActivated(PowerUp checkSlowMo);
 void exitProgram(Character &image, InstructionImages &displayImages);
 int checkHighScore(int playerScore);
 void printHighScore(int highScore[]);
-int averageHighscore(int playerScore);
+int averageHighscore(int playerScore, bool &userScoreAddedToScoreLog);
 
 // PowerUps
 int activatePowerUp(PowerUp &userPowerUps, Character &userCharacter);
@@ -49,13 +49,13 @@ void drawButtons(Button draw[], int gameMode);
 void checkWhichButtonAction(Button check[], int mouseXCoordinate, int mouseYCoordinate, int gameMode, bool buttonClicked);
 void checkButtonState(Button state[], int &gameMode, bool &continuePlaying, Keyboard &userKeyboard, Paused &timerPaused);
 void checkIfNewGameMode(int newGameMode, int previousGameMode, Button b[]);
-void pauseTimers(Paused &timerPaused);
-void unpauseTimers(Paused &timerPaused);
-
-// Checks
-int checkIfFileLoaded(FILE *fptr);
 
 // Application
 int gameInstructions(InstructionImages &draw);
 int credits();
 void printFromTextfile(FILE *fptr);
+
+// Misc / Utilities
+void pauseTimers(Paused &timerPaused);
+void unpauseTimers(Paused &timerPaused);
+int checkIfFileLoaded(FILE *fptr);

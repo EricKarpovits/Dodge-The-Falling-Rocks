@@ -64,6 +64,7 @@
 #define ERROR_MINI_CHARACTER_IMG -31
 #define ERROR_HURT_CHARACTER_IMG -32
 #define ERROR_LOAD_FPTR -33
+#define ERROR_DISPLAY_TIMER -34
 
 // Game Mode Constants
 #define START_MENU 1
@@ -146,7 +147,7 @@ struct Paused {
 
 struct Application {
     ALLEGRO_DISPLAY *display;
-    ALLEGRO_TIMER *timer, *speedIncreaser, *slowmoTimer, *invincibleTimer, *miniTimer;
+    ALLEGRO_TIMER *timer, *speedIncreaser, *slowmoTimer, *invincibleTimer, *miniTimer, *displayTimer;
     ALLEGRO_FONT *arial, *smallArial;
     ALLEGRO_EVENT_QUEUE *event_queue;
     ALLEGRO_SAMPLE *gameMusic, *buttonClick, *characterDeath, *collision;
