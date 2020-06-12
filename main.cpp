@@ -4,13 +4,12 @@
 */
 
 #include "declarations.h"
+#include "prototype.h"
 
-ALLEGRO_DISPLAY *display;
-ALLEGRO_TIMER *timer, *speedIncreaser, *slowmoTimer, *invincibleTimer, *miniTimer;
-ALLEGRO_FONT *arial, *smallArial;
-ALLEGRO_EVENT_QUEUE *event_queue;
+Application app;
 
-int main(int argc, char *argv[]){
+/// Main
+int main(int argc, char *argv[]) {
 
     //Declare variables
     bool continuePlaying = true;
@@ -25,47 +24,42 @@ int main(int argc, char *argv[]){
     Lives userLives[NUMBER_OF_LIVES];
     PowerUp fallingPowerUps[NUMBER_OF_POWERUPS];
     Button clickableButton [NUMBER_OF_BUTTONS];
+    InstructionImages displayImages;
 
     // Initialize restart key bool
     userKeyboard.keyR = false;
 
     // Function to set up the game
     // Returns a non 0 if something went wrong
-    returnCode = setupMain(mainCharacter, userLives, fallingRocks, userKeyboard, fallingPowerUps);
+    returnCode = setupMain(mainCharacter, userLives, fallingRocks, userKeyboard, fallingPowerUps, displayImages);
     if (returnCode != 0) {
-        printf("Returning error code %d.", returnCode);
         return returnCode;
     }
 
+    // Set up the clickable buttons
     buttonSetup(clickableButton, gameMode);
 
-	while (continuePlaying){
+	while (continuePlaying) {
         // A play game function which allows the whole game to operate
-        returnCode = playGame(continuePlaying, userKeyboard, mainCharacter, fallingRocks, userLives, fallingPowerUps, gameMode, clickableButton, timerPaused);
+        returnCode = playGame(
+                        continuePlaying,
+                        userKeyboard,
+                        mainCharacter,
+                        fallingRocks,
+                        userLives,
+                        fallingPowerUps,
+                        gameMode,
+                        clickableButton,
+                        timerPaused,
+                        displayImages);
         if (returnCode != 0) {
-            printf("Returning error code %d.", returnCode);
             return returnCode;
         }
 	}
 
     //A function to exit the program
-    exitProgram(mainCharacter);
+    exitProgram(mainCharacter, displayImages);
 
     return 0;
 }
-
-//This function exits everything for the program
-void exitProgram(Character &image){
-    //Release the bitmap data and exit with no errors
-    al_destroy_bitmap(image.bitmap);
-	al_destroy_display(display);
-	al_destroy_event_queue(event_queue);
-	al_destroy_timer(timer);
-	al_destroy_timer(speedIncreaser);
-	al_destroy_timer(slowmoTimer);
-	al_destroy_timer(invincibleTimer);
-	al_destroy_timer(miniTimer);
-	al_destroy_font(arial);
-}
-
 

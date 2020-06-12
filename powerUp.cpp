@@ -1,40 +1,51 @@
 #include "declarations.h"
+#include "prototype.h"
 
-extern ALLEGRO_DISPLAY *display;
-extern ALLEGRO_TIMER *slowmoTimer, *invincibleTimer, *miniTimer, *speedIncreaser;
+extern Application app;
 
-// This function either activates the timers or resets the timer back to 0
-// if the user gets two consecutive power ups before the power up is over
-int activatePowerUp(PowerUp &userPowerUps, Character &userCharacter){
+/// This function either activates the timers or resets the timer back to 0 if the user obtains the same power up
+/// before the power up is over
+/// Need to pass the power up and character struct
+/// Returns an int
+int activatePowerUp(PowerUp &userPowerUps, Character &userCharacter) {
 
-    if(userPowerUps.powerUpInvincibility){
+    if (userPowerUps.powerUpInvincibility) {
         // When you start a timer that was stopped, it automatically starts the timer from 0
-        al_stop_timer(invincibleTimer);
-        al_start_timer(invincibleTimer);
-    } else if(userPowerUps.powerUpMini){
-        al_stop_timer(miniTimer);
-        al_start_timer(miniTimer);
+        al_stop_timer(app.invincibleTimer);
+        al_set_timer_count(app.invincibleTimer, 0);
+        al_start_timer(app.invincibleTimer);
 
+    } else if (userPowerUps.powerUpMini) {
+        al_stop_timer(app.miniTimer);
+        al_set_timer_count(app.miniTimer, 0);
+        al_start_timer(app.miniTimer);
+        // Make the user turn small
         userCharacter.bitmap = al_load_bitmap("miniMainCharacter.bmp");
         al_convert_mask_to_alpha(userCharacter.bitmap, PINK);
+        // Check for loading erros
         if (!userCharacter.bitmap) {
-            al_show_native_message_box(display, "Error", "Error", "Failed to load image!", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
-            al_destroy_display(display);
-            return -5;
+            al_show_native_message_box(app.display, "Error", "Error", "Failed to mini character image!", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+            al_destroy_display(app.display);
+            return ERROR_MINI_CHARACTER_IMG;
         }
 
-    } else if(userPowerUps.powerUpSlowmo){
-        al_stop_timer(slowmoTimer);
-        al_start_timer(slowmoTimer);
+    // Start or reset the slow motion power up
+    } else if (userPowerUps.powerUpSlowmo) {
+        al_stop_timer(app.slowmoTimer);
+        al_set_timer_count(app.slowmoTimer, 0);
+        al_start_timer(app.slowmoTimer);
     }
 
+    // Set a new power up if the user collided with one
     setupPowerUps(userPowerUps);
 
     return 0;
 }
 
-// This is not in the main game setup because these power ups are an addon and are different objects compared to the rest of the objects
-int setupPowerUps(PowerUp &powerUpSetup){
+/// Set ups the power ups at the start and throughout the game
+/// Need to pass the power up struct
+/// Returns an int (0) if no errors
+int setupPowerUps(PowerUp &powerUpSetup) {
 
     // Declare variables
     int powerUpType;
@@ -47,14 +58,14 @@ int setupPowerUps(PowerUp &powerUpSetup){
 
     // Generates a random number to chose a timer
     // NOTE: If the user is on level 1 a slow motion power up will not generate
-    if(al_get_timer_count(speedIncreaser) < 1){
+    if (al_get_timer_count(app.speedIncreaser) < 1) {
         powerUpType = rand() % 2 + 1;
-    }else{
+    } else {
         powerUpType = rand() % 3 + 1;
     }
 
     // Convert the rnd int to activate the power up
-    switch (powerUpType){
+    switch (powerUpType) {
         case 1:
             powerUpSetup.powerUpMini = true;
             break;
@@ -71,7 +82,7 @@ int setupPowerUps(PowerUp &powerUpSetup){
     powerUpSetup.powerupYCoordinate = (rand() % 5000) - 5000;
 
     // Load the image for the appropriate power up
-    if(powerUpSetup.powerUpInvincibility){
+    if(powerUpSetup.powerUpInvincibility) {
         powerUpSetup.bitmap = al_load_bitmap("powerUpInvincibility.bmp");
     }else if (powerUpSetup.powerUpMini){
         powerUpSetup.bitmap = al_load_bitmap("powerUpMini.bmp");
@@ -79,9 +90,9 @@ int setupPowerUps(PowerUp &powerUpSetup){
         powerUpSetup.bitmap = al_load_bitmap("powerUpSlowmo.bmp");
     }
     if (!powerUpSetup.bitmap) {
-        al_show_native_message_box(display, "Error", "Error", "Failed to load image!", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
-        al_destroy_display(display);
-        return -20;
+        al_show_native_message_box(app.display, "Error", "Error", "Failed to load power up image!", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+        al_destroy_display(app.display);
+        return ERROR_POWERUP_IMG;
     }
 
     //Remove Pink Mask
@@ -90,76 +101,37 @@ int setupPowerUps(PowerUp &powerUpSetup){
     return 0;
 }
 
-// This function checks if the power ups are over based on their timer
+/// This function checks if the power ups are over based on their timer
+/// Need to pass the character struct to reset the image if the character was small
+/// Return an int
 int checkIfPowerUpOver(Character &userCharacter){
 
     // Check invincible timer
-    if (al_get_timer_count(invincibleTimer) > 0){
-        al_stop_timer(invincibleTimer);
+    if (al_get_timer_count(app.invincibleTimer) > 0) {
+        al_stop_timer(app.invincibleTimer);
+        al_set_timer_count(app.invincibleTimer, 0);
     }
     // Check slowmo timer
-    if (al_get_timer_count(slowmoTimer) > 0){
-        al_stop_timer(slowmoTimer);
+    if (al_get_timer_count(app.slowmoTimer) > 0) {
+        al_stop_timer(app.slowmoTimer);
+        al_set_timer_count(app.slowmoTimer, 0);
     }
     // Check mini timer & load back the regular image
-    if (al_get_timer_count(miniTimer) > 0){
-        al_stop_timer(miniTimer);
+    if (al_get_timer_count(app.miniTimer) > 0) {
+        al_stop_timer(app.miniTimer);
+        al_set_timer_count(app.miniTimer, 0);
+
         userCharacter.bitmap = al_load_bitmap("mainCharacter.bmp");
         al_convert_mask_to_alpha(userCharacter.bitmap, PINK);
-
+        // Check for loading erros
         if (!userCharacter.bitmap) {
-            al_show_native_message_box(display, "Error", "Error", "Failed to load image!", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
-            al_destroy_display(display);
-            return -5;
+            al_show_native_message_box(app.display, "Error", "Error", "Failed to load character image!", nullptr, ALLEGRO_MESSAGEBOX_ERROR);
+            al_destroy_display(app.display);
+            return ERROR_CHARACTER_IMG;
         }
     }
 
     return 0;
 }
 
-//This function pauses the timer once the user pauses the game
-void pauseTimers(Paused &timerPaused){
-
-    // Check if the timer is running
-    timerPaused.speedIncreaser = al_get_timer_started(speedIncreaser);
-    timerPaused.invincibleTimer = al_get_timer_started(invincibleTimer);
-    timerPaused.miniTimer = al_get_timer_started(miniTimer);
-    timerPaused.slowmoTimer = al_get_timer_started(slowmoTimer);
-
-    // If the timer is running then pause the timer based on the bool
-    if(timerPaused.speedIncreaser){
-        al_stop_timer(speedIncreaser);
-    }
-    if(timerPaused.invincibleTimer){
-        al_stop_timer(invincibleTimer);
-    }
-    if(timerPaused.miniTimer){
-        al_stop_timer(miniTimer);
-    }
-    if(timerPaused.slowmoTimer){
-        al_stop_timer(slowmoTimer);
-    }
-}
-
-// This function unpauses the timers once the user unpauses the game
-void unpauseTimers(Paused &timerPaused){
-
-    // Based on if the timer was paused the timer will now resume
-    if(timerPaused.speedIncreaser){
-        al_resume_timer(speedIncreaser);
-        timerPaused.speedIncreaser = false;
-    }
-    if(timerPaused.invincibleTimer){
-        al_resume_timer(invincibleTimer);
-        timerPaused.invincibleTimer = false;
-    }
-    if(timerPaused.miniTimer){
-        al_resume_timer(miniTimer);
-        timerPaused.miniTimer = false;
-    }
-    if(timerPaused.slowmoTimer){
-        al_resume_timer(slowmoTimer);
-        timerPaused.slowmoTimer = false;
-    }
-}
 

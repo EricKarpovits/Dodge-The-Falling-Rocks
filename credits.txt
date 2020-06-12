@@ -5,3 +5,4 @@
 8 This game was created in Allegro5 using C
 2 Special thanks:
 6 To Mr. Creelman for the lessons
+7 To Zapsplat for the royalty free music 
