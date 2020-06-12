@@ -1,10 +1,11 @@
 # depslib dependency file v1.0
-1591717207 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\main.cpp
+1591935853 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\main.cpp
 	"declarations.h"
+	"prototype.h"
 
 1589142048 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\character.cpp
 
-1591717650 c:\users\eric1\desktop\karpovits_dodge the falling rocks\declarations.h
+1591933418 c:\users\eric1\desktop\karpovits_dodge the falling rocks\declarations.h
 	<stdio.h>
 	<allegro5/allegro.h>
 	<allegro5/allegro_font.h>
@@ -12,6 +13,8 @@
 	<allegro5/allegro_image.h>
 	<allegro5/allegro_primitives.h>
 	<allegro5/allegro_native_dialog.h>
+	<allegro5/allegro_audio.h>
+	<allegro5/allegro_acodec.h>
 	<time.h>
 	<windows.h>
 
@@ -23,29 +26,55 @@
 1589477414 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\test.cpp
 	"declarations.h"
 
-1591717469 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\gamesetup.cpp
+1591977562 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\gamesetup.cpp
 	"declarations.h"
+	"prototype.h"
 
-1591685246 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\highscore.cpp
+1591980684 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\highscore.cpp
 	"declarations.h"
+	"prototype.h"
 
-1591685245 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\objectmovement.cpp
+1591977562 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\objectmovement.cpp
 	"declarations.h"
+	"prototype.h"
 
 1589839971 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\restart.cpp
 
-1591716698 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\collisions.cpp
+1591977562 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\collisions.cpp
 	"declarations.h"
+	"prototype.h"
 
-1591717336 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\playgame.cpp
+1591980807 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\playgame.cpp
 	"declarations.h"
+	"prototype.h"
 
-1591717207 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\powerup.cpp
+1591977562 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\powerup.cpp
 	"declarations.h"
+	"prototype.h"
 
-1591717352 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\startmenu.cpp
-	"declarations.h"
+1591855122 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\startmenu.cpp
 
-1591715058 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\instructionscredits.cpp
+1591977562 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\instructionscredits.cpp
 	"declarations.h"
+	"prototype.h"
+
+1591977563 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\buttons.cpp
+	"declarations.h"
+	"prototype.h"
+
+1591977562 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\objectsetup.cpp
+	"declarations.h"
+	"prototype.h"
+
+1591977562 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\allegrosetup.cpp
+	"declarations.h"
+	"prototype.h"
+
+1591929066 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\checks.cpp
+
+1591977563 source:c:\users\eric1\desktop\karpovits_dodge the falling rocks\utilities.cpp
+	"declarations.h"
+	"prototype.h"
+
+1591942284 c:\users\eric1\desktop\karpovits_dodge the falling rocks\prototype.h
 
