@@ -1,4 +1,4 @@
-# Dodge The Falling Rocks Game - Eric Karpovits
+# Dodge The Falling Rocks Game - [Eric Karpovits](https://github.com/EricKarpovits)
 
 <p align="center">
   <a href="https://github.com/EricKarpovits/">
